@@ -44,8 +44,9 @@ def generate_quiz(text_input, num_questions=3, difficulty="Medium"):
     "{text_input}"
     
     4. Additional instructions for generating answers:
-    If the answer is a numeric value, make sure it follows number format like 987,654,321.12345.\
-    If the answer has a unit, make sure other choices have the same unit
+    If the answer is a numeric value, make sure it follows number format like 987,654,321.12345.
+    If the answer is a numeric value, generate other choices in similar numeric fashion. Don't limit to numbers that show up in user text.
+    If the answer has a unit, make sure other choices have the same unit. If the text doesn't contain enough numbers of the same unit, make up other numbers with the same unit.
     
     """
     headers = {
@@ -55,19 +56,19 @@ def generate_quiz(text_input, num_questions=3, difficulty="Medium"):
 
     # 3. Construct the Payload
     payload = {
-        "model": "gemma3:4b",  # <--- CHANGE THIS to your installed model (e.g. 'mistral')
+        "model": "gemma3:4b", #gpt always generate natural language responses so using gemma
         "messages": [
             {"role": "system", "content": "You are a helpful assistant that outputs strict JSON."},
             {"role": "user", "content": prompt}
         ],
-        "format": "json",   # <--- CRITICAL: Forces Ollama to output valid JSON
-        "stream": False     # Keep it false to get the whole response at once
+        "format": "json",
+        "stream": False # Keep it false to get the whole response at once
     }
 
     try:
         # 4. Make the Request
         response = requests.post(url, json=payload, headers=headers)
-        response.raise_for_status() # Check for HTTP errors
+        response.raise_for_status()
         
         # 5. Parse the Response
         result = response.json()
@@ -85,7 +86,6 @@ def generate_quiz(text_input, num_questions=3, difficulty="Medium"):
         print(quiz_data)
         print()
 
-        # 2. VALIDATE AND FIX <--- Add this step
         quiz_data = validate_and_fix_quiz(quiz_data)
         
         return quiz_data
@@ -114,15 +114,10 @@ def validate_and_fix_quiz(quiz_data):
             continue
 
         # CHECK: Is the answer in the list?
-        # We use a case-insensitive check to be safe (e.g., "CPU" vs "cpu")
-        # specific implementation depends on exact string matching needs
-        
         if correct_ans not in options:
             # --- THE FIX ---
             # The LLM forgot to include the answer in the choices.
-            # We will overwrite the first option (or a random one) with the correct answer.
-            
-            # optional: shuffle so the answer isn't always the first one
+            # Overwrite the first option (or a random one) with the correct answer.
             random_index = random.randint(0, len(options) - 1)
             options[random_index] = correct_ans
             

@@ -1,10 +1,10 @@
 import streamlit as st
-import agent_logic  # Imports your backend file
+import agent_logic
 
 # Page Configuration
-st.set_page_config(page_title="Smart Quiz Generator", page_icon="🎓")
+st.set_page_config(page_title="Quiz Master", page_icon="🎓")
 
-st.title("🎓 Smart Quiz Generator")
+st.title("🎓 Quiz Master - AI Quiz Generator")
 st.caption("Powered by Ollama")
 
 # --- SIDEBAR: SETTINGS ---
@@ -12,7 +12,6 @@ with st.sidebar:
     st.header("Settings")
     difficulty = st.selectbox("Difficulty", ["Easy", "Medium", "Hard"])
     num_questions = st.slider("Number of Questions", 1, 5, 3)
-    #st.info("Ensure Ollama is running in the background!")
 
 # --- MAIN: INPUT ---
 st.subheader("1. Provide Study Material")
@@ -40,6 +39,7 @@ if st.button("Generate Quiz", type="primary"):
             else:
                 st.session_state.quiz_data = data
                 st.session_state.answers = {} # Reset answers
+                
                 st.rerun() # Refresh to show the quiz
 
 # --- MAIN: QUIZ DISPLAY ---
