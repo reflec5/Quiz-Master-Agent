@@ -14,7 +14,7 @@ This project demonstrates the implementation of an AI agent that can:
 The project follows a modular architecture separating the Frontend (UI) from the Backend (Agent Logic).
 
 ```text
-quiz_agent/
+quiz_master_agent/
 │
 ├── .streamlit/
 │   └── secrets.toml      # (Ignored by Git) Stores sensitive API Keys & Endpoint URLs
@@ -98,7 +98,3 @@ We utilized a "System Persona" to enforce the role of a teacher. We used "Few-Sh
   * **Hallucination**: The LLM occasionally omitted the correct answer from the options list. We implemented a deterministic Python function to check for this and inject the correct answer if missing.
 
   * **Formatting**: The LLM sometimes included Markdown backticks (```json) in the response. We added a string cleaning step before JSON parsing.
-
-## 📜 License
-
-This project is created for the "Intelligent Agents with LLMs" course requirement.
