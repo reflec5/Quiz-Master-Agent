@@ -38,6 +38,8 @@ quiz_master_agent/
 
 * **Session State Management**: Uses Streamlit Session State to persist quiz data across UI re-renders without needing an external database.
 
+* **User Customization**: Aside from user text, user may finetune questions styles to their likings by adding their own prompts.
+
 ## 🚀 Setup & Installation
 
 ### 1. Prerequisites
