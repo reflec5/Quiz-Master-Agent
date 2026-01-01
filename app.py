@@ -12,6 +12,13 @@ with st.sidebar:
     st.header("Settings")
     difficulty = st.selectbox("Difficulty", ["Easy", "Medium", "Hard"])
     num_questions = st.slider("Number of Questions", 1, 5, 3)
+    
+    st.divider()
+    
+    custom_instructions = st.text_area(
+        "Extra Instructions:",
+        placeholder="e.g., 'Focus on Chapter 2 content' or 'Don't ask about math'"
+    )
 
 # --- MAIN: INPUT ---
 st.subheader("1. Provide Study Material")
@@ -30,8 +37,7 @@ if st.button("Generate Quiz", type="primary"):
     else:
         with st.spinner("Agent is analyzing text and generating questions..."):
             # Call the backend
-            data = agent_logic.generate_quiz(user_text, num_questions, difficulty)
-            print(data)
+            data = agent_logic.generate_quiz(user_text, num_questions, difficulty, custom_instructions)
             
             # Error Handling
             if isinstance(data, dict) and "error" in data:

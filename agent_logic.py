@@ -6,7 +6,7 @@ import streamlit as st
 
 API_KEY = os.environ["API_KEY"]
 
-def generate_quiz(text_input, num_questions=3, difficulty="Medium"):
+def generate_quiz(text_input, num_questions=3, difficulty="Medium", custom_instr=""):
     """
     Sends a prompt to the local Ollama instance to generate a JSON quiz.
     """
@@ -21,12 +21,12 @@ def generate_quiz(text_input, num_questions=3, difficulty="Medium"):
     You are a Teacher AI. Your goal is to generate a quiz based on the user's text.
     
     Instructions:
-    1. Create {num_questions} multiple-choice questions based on the text below.
+    1. Create {num_questions} multiple-choice questions based on the text below. All choices must be unique.
     2. Difficulty Level: {difficulty}.
     2-1. Based on the given difficulty level, generate questions as followed:
     Easy: Blank a keyword in a statement of user text, and use the keyword as the answer. Alternatively, generate "fill in the blank" problems. Example: "The _____ is the powerhouse of the cell".
     Medium: Phrase a problem based on a statement in user text. Do not include the answer. OR: Ask what a keyword in user text means, and use descriptions of keywords as answer choices.
-    Hard: Any, you may use answers that require calculations.
+    Hard: Any, you may ask questions that require complex calculations.
     
     3. You must output ONLY a raw JSON array as indicated by the following structure. Do not add markdown formatting like ```json.
     
@@ -43,7 +43,11 @@ def generate_quiz(text_input, num_questions=3, difficulty="Medium"):
     User Text:
     "{text_input}"
     
-    4. Additional instructions for generating answers:
+    4. User may enter their own prompt for question customization. Always follow the prompt if provided.
+    User Prompt:
+    "{custom_instr}"
+    
+    5. Additional instructions for generating answers:
     If the answer is a numeric value, make sure it follows number format like 987,654,321.12345.
     If the answer is a numeric value, generate other choices in similar numeric fashion. Don't limit to numbers that show up in user text.
     If the answer has a unit, make sure other choices have the same unit. If the text doesn't contain enough numbers of the same unit, make up other numbers with the same unit.
